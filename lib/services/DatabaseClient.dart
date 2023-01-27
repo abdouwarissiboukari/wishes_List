@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:mes_envies/models/ItemList.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -50,5 +51,21 @@ class DatabaseClient {
       list INTEGER
     )
 ''');
+  }
+
+  // Obtenir des donnée
+  Future<List<ItemList>> allItems() async {
+    Database db = await database;
+    const query = "SELECT * FROM list";
+    List<Map<String, dynamic>> mapList = await db.rawQuery(query);
+
+    return mapList.map((map) => ItemList.fromMap(map)).toList();
+  }
+
+  // Ajouter des données
+  Future<bool> addItemList(String text) async {
+    Database db = await database;
+    await db.insert('list', {"name": text});
+    return true;
   }
 }
