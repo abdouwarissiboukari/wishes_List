@@ -4,6 +4,7 @@ import 'package:mes_envies/models/ItemList.dart';
 import 'package:mes_envies/services/DatabaseClient.dart';
 import 'package:mes_envies/views/Widgets/AddDialog.dart';
 import 'package:mes_envies/views/Widgets/CustomAppBar.dart';
+import 'package:mes_envies/views/tiles/ItemListTile.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -27,10 +28,13 @@ class HomeState extends State<Home> {
         buttonTitle: "Ajouter",
         callback: addItemList,
       ),
-      body: Center(
-        child: Text(
-            "Nous avons créé le body, et nous avons ${items.length} éléments"),
-      ),
+      body: ListView.separated(
+          itemBuilder: ((context, index) => ItemListTile(
+              itemList: items[index],
+              onPressed: onListPressed,
+              onDelete: onDeleteItem)),
+          separatorBuilder: ((context, index) => const Divider()),
+          itemCount: items.length),
     );
   }
 
@@ -63,4 +67,8 @@ class HomeState extends State<Home> {
     Navigator.pop(context);
     FocusScope.of(context).requestFocus(FocusNode());
   }
+
+  onListPressed(ItemList itemList) {}
+
+  onDeleteItem(ItemList itemList) {}
 }

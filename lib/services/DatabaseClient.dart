@@ -35,14 +35,14 @@ class DatabaseClient {
   onCreate(Database database, int version) async {
     // Table 1
     await database.execute('''
-      CREATE TABLE list (
-      id INTAGER PRIMARY KEY,
+      CREATE TABLE IF NOT EXISTS list (
+      id INTEGER PRIMARY KEY,
       name TEXT NOT NULL
       )
 ''');
     // Table 2
     await database.execute('''
-    CREATE TABLE article (
+    CREATE TABLE IF NOT EXISTS article (
       id INTEGER PRIMARY KEY,
       name TEXT NOTE NULL,
       price REAL,
@@ -55,6 +55,8 @@ class DatabaseClient {
 
   // Obtenir des donnée
   Future<List<ItemList>> allItems() async {
+    // deleteAllItemList();
+    // onTableChanged();
     Database db = await database;
     const query = "SELECT * FROM list";
     List<Map<String, dynamic>> mapList = await db.rawQuery(query);
@@ -67,5 +69,28 @@ class DatabaseClient {
     Database db = await database;
     await db.insert('list', {"name": text});
     return true;
+  }
+
+  // Suppression des données
+  Future<bool> deleteAllItemList() async {
+    Database db = await database;
+    const query = "DELETE FROM list";
+    await db.rawDelete(query);
+
+    return true;
+  }
+
+  //Suppression de table
+  onTableChanged() async {
+    Database db = await database;
+    const deleteQuery = "DROP TABLE IF EXISTS list";
+    db.execute(deleteQuery);
+
+    db.execute('''
+      CREATE TABLE IF NOT EXISTS list (
+      id INTEGER PRIMARY KEY,
+      name TEXT NOT NULL
+      );
+      ''');
   }
 }
