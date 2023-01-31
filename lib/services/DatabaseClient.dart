@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:mes_envies/models/Article.dart';
 import 'package:mes_envies/models/ItemList.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -55,8 +56,6 @@ class DatabaseClient {
 
   // Obtenir des donnée
   Future<List<ItemList>> allItems() async {
-    // deleteAllItemList();
-    // onTableChanged();
     Database db = await database;
     const query = "SELECT * FROM list";
     List<Map<String, dynamic>> mapList = await db.rawQuery(query);
@@ -71,26 +70,36 @@ class DatabaseClient {
     return true;
   }
 
-  // Suppression des données
-  Future<bool> deleteAllItemList() async {
+  Future<bool> upset(Article article) async {
+    return true;
+  }
+
+  // Supprimer liste
+  Future<bool> removeItem(ItemList itemList) async {
     Database db = await database;
-    const query = "DELETE FROM list";
-    await db.rawDelete(query);
+    await db.delete('list', where: 'id=?', whereArgs: [itemList.id]);
+    // Supprimer
 
     return true;
   }
 
-  //Suppression de table
-  onTableChanged() async {
-    Database db = await database;
-    const deleteQuery = "DROP TABLE IF EXISTS list";
-    db.execute(deleteQuery);
-
-    db.execute('''
-      CREATE TABLE IF NOT EXISTS list (
-      id INTEGER PRIMARY KEY,
-      name TEXT NOT NULL
-      );
-      ''');
-  }
+//   // Suppression des données
+//   Future<bool> deleteAllItemList() async {
+//     Database db = await database;
+//     const query = "DELETE FROM list";
+//     await db.rawDelete(query);
+//     return true;
+//   }
+//   //Suppression de table
+//   onTableChanged() async {
+//     Database db = await database;
+//     const deleteQuery = "DROP TABLE IF EXISTS list";
+//     db.execute(deleteQuery);
+//     db.execute('''
+//       CREATE TABLE IF NOT EXISTS list (
+//       id INTEGER PRIMARY KEY,
+//       name TEXT NOT NULL
+//       );
+//       ''');
+//   }
 }

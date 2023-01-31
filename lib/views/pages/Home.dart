@@ -4,6 +4,7 @@ import 'package:mes_envies/models/ItemList.dart';
 import 'package:mes_envies/services/DatabaseClient.dart';
 import 'package:mes_envies/views/Widgets/AddDialog.dart';
 import 'package:mes_envies/views/Widgets/CustomAppBar.dart';
+import 'package:mes_envies/views/pages/ArticleListView.dart';
 import 'package:mes_envies/views/tiles/ItemListTile.dart';
 
 class Home extends StatefulWidget {
@@ -68,7 +69,17 @@ class HomeState extends State<Home> {
     FocusScope.of(context).requestFocus(FocusNode());
   }
 
-  onListPressed(ItemList itemList) {}
+  onListPressed(ItemList itemList) {
+    final next = ArticleListView(itemList: itemList);
+    MaterialPageRoute materialPageRoute =
+        MaterialPageRoute(builder: ((context) {
+      return next;
+    }));
 
-  onDeleteItem(ItemList itemList) {}
+    Navigator.of(context).push(materialPageRoute);
+  }
+
+  onDeleteItem(ItemList itemList) {
+    DatabaseClient().removeItem(itemList).then((sucess) => getItemList());
+  }
 }
