@@ -1,5 +1,5 @@
 class Article {
-  int id;
+  int? id;
   String name;
   int list;
   double? price;
@@ -22,4 +22,16 @@ class Article {
         price = map["price"],
         shop = map["shop"],
         image = map["image"];
+
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {
+      'name': name,
+      'image': image,
+      'price': price,
+      'shop': shop,
+      'list': list,
+    };
+    if (id != null) map['id'] = id;
+    return map;
+  }
 }

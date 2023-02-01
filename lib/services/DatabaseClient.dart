@@ -63,6 +63,16 @@ class DatabaseClient {
     return mapList.map((map) => ItemList.fromMap(map)).toList();
   }
 
+  Future<List<Article>> articlesFromId(int id) async {
+    Database db = await database;
+    List<Map<String, dynamic>> mapList = await db.query(
+      'article',
+      where: 'list =?',
+      whereArgs: [id],
+    );
+    return mapList.map((map) => Article.fromMap(map)).toList();
+  }
+
   // Ajouter des données
   Future<bool> addItemList(String text) async {
     Database db = await database;
@@ -71,6 +81,11 @@ class DatabaseClient {
   }
 
   Future<bool> upset(Article article) async {
+    Database db = await database;
+    (article.id == null)
+        ? await db.insert('article', article.toMap())
+        : await db.update('article', article.toMap(),
+            where: 'id=?', whereArgs: [article.id]);
     return true;
   }
 
@@ -79,7 +94,7 @@ class DatabaseClient {
     Database db = await database;
     await db.delete('list', where: 'id=?', whereArgs: [itemList.id]);
     // Supprimer
-
+    await db.delete('article', where: 'list = ?', whereArgs: [itemList.id]);
     return true;
   }
 
