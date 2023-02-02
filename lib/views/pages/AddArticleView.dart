@@ -121,7 +121,7 @@ class AddArticleViewState extends State<AddArticleView> {
     XFile? xFile = await ImagePicker().pickImage(source: source);
     if (xFile == null) return;
     setState(() {
-      imagePath = xFile.path!;
+      imagePath = xFile.path;
     });
   }
 }

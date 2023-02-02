@@ -10,6 +10,7 @@ class ArticleTile extends StatelessWidget {
   ArticleTile({super.key, required this.article});
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Card(
       elevation: 7.5,
       margin: EdgeInsets.all(12),
@@ -24,7 +25,12 @@ class ArticleTile extends StatelessWidget {
           (article.image != null)
               ? Container(
                   padding: const EdgeInsets.all(5),
-                  child: Image.file(File(article.image!)),
+                  child: Image.file(
+                    File(article.image!),
+                    height: size.height / 3,
+                    width: size.width,
+                    fit: BoxFit.cover,
+                  ),
                 )
               : Container(),
           Text("Prix : ${article.price} €"),
