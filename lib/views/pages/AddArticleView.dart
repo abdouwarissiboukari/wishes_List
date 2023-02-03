@@ -40,6 +40,7 @@ class AddArticleViewState extends State<AddArticleView> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: CustomAppBar(
         titleString: "Ajouter un article",
@@ -67,7 +68,12 @@ class AddArticleViewState extends State<AddArticleView> {
                           Icons.camera,
                           size: 128,
                         )
-                      : Image.file(File(imagePath!)),
+                      : Image.file(
+                          File(imagePath!),
+                          height: size.height / 3,
+                          width: size.width,
+                          // fit: BoxFit.none,
+                        ),
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
